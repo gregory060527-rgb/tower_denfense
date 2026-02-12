@@ -126,7 +126,7 @@ public class Enemymanager : MonoBehaviour
 
         for (int i = 0; i < waveset.Count; i++)
         {
-            Instantiate(waveset[1], spawnPoint.position, Quaternion.identity);
+            Instantiate(waveset[i], spawnPoint.position, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(spawnDelayMin,spawnDelayMax));
 
         }

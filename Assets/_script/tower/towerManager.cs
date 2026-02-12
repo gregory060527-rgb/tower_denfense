@@ -24,7 +24,7 @@ public class towerManager : MonoBehaviour
     if (placingTower)
     {
         PlaceTower placeTowerComp = placingTower.GetComponent<PlaceTower>();
-        if (placeTowerComp != null && placeTowerComp.isplacing)
+        if (placeTowerComp != null && !placeTowerComp.isplacing)
         {
             placingTower = null;
         }

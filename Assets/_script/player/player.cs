@@ -14,7 +14,7 @@ public class player : MonoBehaviour
 
     void Awake()
     {
-        
+        main = this;
     }
 
     void Update()

@@ -2,12 +2,8 @@ using System;
 using System.Numerics;
 using UnityEngine;
 
-[RequireComponent(typeof(PlaceTower))]
 public class PlaceTower : MonoBehaviour
 {
-    private TowerManager towerManager;
-    private player player;
-
     [SerializeField] private SpriteRenderer rangeSprite;
     [SerializeField] private CircleCollider2D rangeCollider;
     [SerializeField] private Color gray;
@@ -15,9 +11,6 @@ public class PlaceTower : MonoBehaviour
 
     [NonSerialized] public bool isplacing = true;
     private bool isRestricted = false;
-    private TowerManager TowerManager;
-    private player Player;
-
     private Towers towers;
 
     void Awake()
@@ -31,12 +24,10 @@ public class PlaceTower : MonoBehaviour
         if(isplacing)
         {
             UnityEngine.Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
             transform.position = mousePosition;
         }
         
-        if (Input.GetMouseButtonDown(1) && !isRestricted && towerManager.Cost < player.main.money)
-
+        if (Input.GetMouseButtonDown(1) && !isRestricted && towers.cost <= player.main.money)
         {
             rangeCollider.enabled = true;
             isplacing = false;
@@ -45,28 +36,20 @@ public class PlaceTower : MonoBehaviour
             GetComponent<PlaceTower>().enabled = false;
         }
         
-        if(isRestricted)
-        {
-            rangeSprite.color = red;
-        }
-        else
-        {
-            rangeSprite.color = gray;
-        }
+        rangeSprite.color = isRestricted ? red : gray;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "restricted" || collision.gameObject.tag == "tower" && isplacing)
+        if((collision.gameObject.tag == "restricted" || collision.gameObject.tag == "tower") && isplacing)
         {
             isRestricted = true;
         }
-        
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "restricted" || collision.gameObject.tag == "tower" && isplacing)      
+        if((collision.gameObject.tag == "restricted" || collision.gameObject.tag == "tower") && isplacing)
         {
             isRestricted = false;
         }
