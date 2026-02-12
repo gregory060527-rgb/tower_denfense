@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 {
     public int health = 50;
     [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float checkpointRadius = 0.5f;
       
       private Rigidbody2D rb;
 
@@ -14,6 +15,7 @@ public class Enemy : MonoBehaviour
 
       [NonSerialized] public int index = 0;
       [NonSerialized] public float distance = 0f;
+      private bool hasReachedFirstCheckpoint = false;
 
      void Awake()
     {
@@ -37,12 +39,20 @@ public class Enemy : MonoBehaviour
         checkPoint = Enemymanager.main.Checkpoints[index];
         distance = UnityEngine.Vector2.Distance(transform.position, checkPoint.position);
         
-        if(distance < 0.1f)
+        if(distance < checkpointRadius)
         {
-           index++;
-           if(index < Enemymanager.main.Checkpoints.Length)
+           if(index == 0 && !hasReachedFirstCheckpoint)
            {
-               checkPoint = Enemymanager.main.Checkpoints[index];
+               hasReachedFirstCheckpoint = true;
+           }
+           
+           if(index > 0 || hasReachedFirstCheckpoint)
+           {
+               index++;
+               if(index < Enemymanager.main.Checkpoints.Length)
+               {
+                   checkPoint = Enemymanager.main.Checkpoints[index];
+               }
            }
         }
     }
