@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
 
       [NonSerialized] public int index = 0;
       [NonSerialized] public float distance = 0f;
-      private bool hasReachedFirstCheckpoint = false;
+      private bool canAdvanceCheckpoint = false;
 
      void Awake()
     {
@@ -39,20 +39,18 @@ public class Enemy : MonoBehaviour
         checkPoint = Enemymanager.main.Checkpoints[index];
         distance = UnityEngine.Vector2.Distance(transform.position, checkPoint.position);
         
-        if(distance < checkpointRadius)
+        if(distance > checkpointRadius)
         {
-           if(index == 0 && !hasReachedFirstCheckpoint)
+            canAdvanceCheckpoint = true;
+        }
+        
+        if(distance < checkpointRadius && canAdvanceCheckpoint)
+        {
+           index++;
+           canAdvanceCheckpoint = false;
+           if(index < Enemymanager.main.Checkpoints.Length)
            {
-               hasReachedFirstCheckpoint = true;
-           }
-           
-           if(index > 0 || hasReachedFirstCheckpoint)
-           {
-               index++;
-               if(index < Enemymanager.main.Checkpoints.Length)
-               {
-                   checkPoint = Enemymanager.main.Checkpoints[index];
-               }
+               checkPoint = Enemymanager.main.Checkpoints[index];
            }
         }
     }
