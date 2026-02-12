@@ -40,12 +40,20 @@ public class Enemy : MonoBehaviour
         if(distance < 0.1f)
         {
            index++;
+           if(index < Enemymanager.main.Checkpoints.Length)
+           {
+               checkPoint = Enemymanager.main.Checkpoints[index];
+           }
         }
     }
 
     void FixedUpdate()
     {
-        if(index >= Enemymanager.main.Checkpoints.Length) return;
+        if(checkPoint == null || index >= Enemymanager.main.Checkpoints.Length)
+        {
+            rb.linearVelocity = UnityEngine.Vector2.zero;
+            return;
+        }
 
         UnityEngine.Vector2 direction = (checkPoint.position - transform.position).normalized;
         transform.right = checkPoint.position - transform.position;
