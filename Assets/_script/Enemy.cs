@@ -28,21 +28,25 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if(index >= Enemymanager.main.Checkpoints.Length)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         checkPoint = Enemymanager.main.Checkpoints[index];
-        distance = UnityEngine.Vector2.Distance(transform.position, Enemymanager.main.Checkpoints[index].position);
+        distance = UnityEngine.Vector2.Distance(transform.position, checkPoint.position);
         
-        if(UnityEngine.Vector2.Distance(transform.position, checkPoint.position) < 0.1f)
+        if(distance < 0.1f)
         {
            index++;
-           if(index >= Enemymanager.main.Checkpoints.Length)
-              {
-                Destroy(gameObject);
-              }
         }
     }
 
     void FixedUpdate()
     {
+        if(index >= Enemymanager.main.Checkpoints.Length) return;
+
         UnityEngine.Vector2 direction = (checkPoint.position - transform.position).normalized;
         transform.right = checkPoint.position - transform.position;
         rb.linearVelocity = direction * moveSpeed;
